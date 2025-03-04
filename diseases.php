@@ -1,115 +1,72 @@
 <?php
 include 'header.php';
+require_once '../vendor/autoload.php'; // Load the Medoo library
 
-$diseases = $db->select('diseases', "*");
+use Medoo\Medoo;
 
-//print_r($user);
-?> 
-<div class="main-content">
+$db = new Medoo();
+?>
+<section class="services-one">
+    <div class="services-one__bg" style="background-image: url(assets/images/backgrounds/services-one-bg.jpg);">
+    </div>
+    <?php
+    if (isset($_REQUEST['submit'])) {
+        if (!empty($_REQUEST['search'])) {
+            $search = $_REQUEST['search'];
+        }
+        $results = $db->select("diseases", "*", ["disease_name[~]" => $search]);
+        ?>
+        <section class = "services-page">
+            <div class = "container">
+                <div class = "row">
+                    
+                    <br><br><br><br><br>
+                    <br><br><br><br><br>
+                    <!--Services One Single Start-->
 
-    <div class="page-content">
-        <div class="container-fluid">
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Diseases</h4>
-
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-
-                                <li class="breadcrumb-item active">
-                                    <a href='disease-add.php' class=" btn btn-sm btn-primary text-white">
-                                        <i class="ri-add-line align-bottom me-1"></i> Add New Disease
+                    <?php
+                    if ($results) {
+                        echo'<h1 class="text-white">Diseases</h1>';
+                        foreach ($results as $disease) {
+                            ?>
+                            <div class = "col-xl-4 col-lg-4 col-md-6">
+                                <div class = "blog-one__single">
+                                    <!--<div class = "blog-one__img-box">
+                                    <div class = "blog-one__img">
+                                    <img src = "assets/images/blog/blog-1-1.jpg" alt = "">
+                                    <a href = "blog-details.html">
+                                    <span class = "blog-one__plus"></span>
                                     </a>
-                                </li>
-                            </ol>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- end page title -->
+                                    </div>
+                                    </div>-->
+                                    <div class = "blog-one__content">
 
 
+                                        <h3 class = "blog-one__title"><a href = "disease-details.html"><?php echo $disease['disease_name']; ?></a></h3>
+                                        <p class="blog-one__text"><?php echo $disease['description']; ?></p>
+                                    </div>
+                                    <div class="blog-one__hover-content">
 
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped align-middle table-nowrap" id="customerTable">
-                                    <thead class="bg-primary text-white">
-                                        <tr>
-                                            <th>Sr.No</th>
-                                            <th class="sort" data-sort="email">Disease Name</th>
-                                            <!-- <th class="sort" data-sort="action">Action</th> -->
-
-                                         <th class="sort" data-sort="type">Description</th>
-                                          <th class="sort" data-sort="type">Do's</th>
-                                           <th class="sort" data-sort="type">Don'ts</th>
-                                            <th class="sort" data-sort="type">Action</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody >
-                                        <?php
-                                        $c = 1;
-                                        foreach ($diseases as $disease) {
-
-                                            echo "<tr class='$c'>";
-                                            echo '<th>' . $c++ . '</th>';
-                                            ?>
-
-
-                                        <td class=""><?php echo $disease['disease_name'] ?></td>
-                                        
-
-                                       
-                                         
-                                            <td class=""><?php echo $disease['description'] ?></td>
-                                             <td class=""><?php echo $disease['do_s'] ?></td>
-                                              <td class=""><?php echo $disease['don_t'] ?></td>
-                                        <td>
-                                            
-                                        <div class="d-flex gap-2">
-                                                        <div class="edit">
-                                                            <button class="btn btn-sm btn-success edit-item-btn" onClick="location.href = 'disease-update.php?disease_id=<?php echo $disease['disease_id']; ?>';" data-bs-toggle="modal" data-bs-target="#showModal" >Edit</button>
-                                                        </div>
-                                                        <div class="remove">
-                                                            <button class="btn btn-sm btn-danger remove-item-btn" onClick="location.href = 'disease-delete.php?disease_id=<?php echo $disease['disease_id']; ?>';"  >Remove</button>
-                                                        </div>
-                                                    </div>      
-                                           
-                                        </td>
-
-                                        </tr>
-                                    <?php } ?>
-                                    </tbody>
-                                </table>
-                                <div class="noresult" style="display: none">
-                                    <div class="text-center">
-                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
-                                        <h5 class="mt-2">Sorry! No Result Found</h5>
-                                        <p class="text-muted mb-0">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                        <h3 class="blog-one__title"><a href="disease-details.html"><?php echo $disease['disease_name']; ?></a></h3>
+                                        <p class="blog-one__hover-text"><?php echo $disease['description']; ?></p>
+                                        <div class="blog-one__hover-btn-box">
+                                            <a href="disease-details.php" class="blog-one__hover-btn">Read More<span
+                                                    class="icon-right-arrow-1"></span></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-
-                        </div>
-                    </div><!-- end card -->
-                </div>
-                <!-- end col -->
+                            <?php
+                        }
+                    }
+                }
+                ?>
+                <!--Services One Single End-->
             </div>
-            <!-- end col -->
         </div>
-    </div>
-</div>
-
-
-
+    </section>
+</section>
+<hr>
 <?php
 include 'footer.php';
 ?>
